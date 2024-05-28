@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fishes</title>
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Nanum+Pen+Script" rel="stylesheet">
+    <style>
+        h1 {
+            font-family: "Indie Flower", cursive;
+        }
+
+        p {
+            text-indent: 30px;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #fce4ec;
+        }
+
+        .heart {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            text-align: center;
+            transform: translate(-50%, -50%);
+            transition: transform 2s;
+            z-index: 1;
+        }
+
+        .heart > img {
+            width: 50px;
+            height: auto;
+        }
+
+        .message {
+            padding: 20px;
+            font-family: 'Nanum Pen Script', cursive;
+            background-color: #eee;
+            width: 300px;
+            height: 75%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            overflow: hidden;
+            animation-name: openmsg;
+            animation-duration: 2s;
+            animation-timing-function: linear;
+            animation-play-state: paused;
+            animation-fill-mode: forwards;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+            border-radius: 5px;
+        }
+
+        .heart > img:hover {
+            animation-name: beat;
+            animation-duration: 2s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            animation-play-state: running;
+        }
+
+        @keyframes beat {
+            0%, 100% {
+                width: 50px;
+            }
+            25%, 75% {
+                width: 58px;
+            }
+            50% {
+                width: 45px;
+            }
+        }
+
+        @keyframes openmsg {
+            0% {
+                height: 0;
+                padding: 0 20px;
+            }
+            100% {
+                height: 75%;
+                padding: 20px;
+            }
+        }
+
+        @keyframes heartMove {
+            0% {
+                top: 50%;
+            }
+            100% {
+                top: 85%;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .openNor {
+            animation-direction: normal;
+            animation-play-state: running;
+        }
+
+        .closeNor {
+            animation-direction: reverse;
+            animation-play-state: running;
+        }
+
+        .no-anim {
+            animation: none;
+        }
+
+        .closed {
+            height: 0;
+            padding: 0 20px;
+        }
+
+        .bottom {
+            bottom: 5px;
+        }
+
+        .openHer {
+            animation-name: heartMove;
+            animation-duration: 2s;
+            animation-timing-function: linear;
+            animation-play-state: running;
+            animation-fill-mode: forwards;
+        }
+
+        .closeHer {
+            animation-name: heartMove;
+            animation-duration: 2s;
+            animation-timing-function: linear;
+            animation-play-state: running;
+            animation-direction: reverse;
+            animation-fill-mode: forwards;
+        }
+
+        .beating > img {
+            animation-name: beat;
+            animation-duration: 2s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            animation-play-state: running;
+        }
+
+        .openedHer {
+            top: 85%;
+            transform: translate(-50%, 0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <label>
+            <div class="heart">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Love_Heart_SVG.svg" alt="Heart Image">
+            </div>
+            <input id="messageState" type="checkbox" style="display:none">
+        </label>
+        <div class="message">
+            <div style="overflow-y:scroll; overflow-x:hidden; height:550px;">
+                <h1><b>Hello, my lovely fishes!</b></h1>
+                <b>
+                    <p>I want to start this letter with I LOVE YOU. I know dili kaayu ko vocal but pls know nga grabe jud kaayu tamo gi cherish. Karun nga graduate nata ug junior highschool and some of us pajud dili same ug shs nga sudlan, I hope nga connected gihapon ta just like before. Because I really can't believe it nga dili nata same ug school. I will miss you a lot. Like a lot jud. Pirmi siguro ko mag relapse sa atong mga memories kay those are the moments that I will always remember even in my deathbed. The moment nga I know I'm with my favorite people. Moments nga I'm genuinely happy.</p>
+                    <i style="color: #ff0000">So, Thank you for being my friends, my safe space, my home. I LOVE YOU. MWAMWA</i>
+                    <br><br>
+                    Your love, Thea.
+                </b>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#messageState").on("change", function () {
+                $(".message").removeClass("openNor closeNor");
+                if ($("#messageState").is(":checked")) {
+                    $(".message")
+                        .removeClass("closed no-anim")
+                        .addClass("openNor");
+                    $(".heart")
+                        .removeClass("closeHer openedHer")
+                        .addClass("openHer");
+                    $(".container").stop().animate({ backgroundColor: "#f48fb1" }, 2000);
+                    console.log("Opening");
+                } else {
+                    $(".message").removeClass("no-anim").addClass("closeNor");
+                    $(".heart")
+                        .removeClass("openHer openedHer")
+                        .addClass("closeHer");
+                    $(".container").stop().animate({ backgroundColor: "#fce4ec" }, 2000);
+                    console.log("Closing");
+                }
+            });
+
+            $(".message").on(
+                "webkitAnimationEnd oanimationend msAnimationEnd animationend",
+                function () {
+                    console.log("Message Animation End");
+                    if ($(".message").hasClass("closeNor")) {
+                        $(".message").addClass("closed");
+                    }
+                    $(".message")
+                        .removeClass("openNor closeNor")
+                        .addClass("no-anim");
+                }
+            );
+
+            $(".heart").on(
+                "webkitAnimationEnd oanimationend msAnimationEnd animationend",
+                function () {
+                    console.log("Fishes End");
+                    if (!$(".heart").hasClass("closeHer")) {
+                        $(".heart").addClass("openedHer beating");
+                    } else {
+                        $(".heart").addClass("no-anim").removeClass("beating");
+                    }
+                    $(".heart").removeClass("openHer closeHer");
+                }
+            );
+        });
+    </script>
+</body>
+</html>
+
